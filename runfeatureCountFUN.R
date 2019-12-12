@@ -20,7 +20,7 @@ suppressWarnings(suppressMessages(require(AnnotationDbi)))
 .makeSAF<-function(gtf){
   print("Loading reference annotation from:")
   print(gtf)
-  txdb <- suppressWarnings(suppressMessages(GenomicFeatures::makeTxDbFromGFF(file=gtf, format="gtf")))
+  txdb <- suppressWarnings(suppressMessages(GenomicFeatures::makeTxDbFromGFF(file=gtf, format = "gff3")))
 
   ## Make Gene-range GR-object
   se <- suppressMessages(
