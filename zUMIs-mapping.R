@@ -11,7 +11,7 @@ samtools <- inp$samtools_exec
 STAR_exec <- inp$STAR_exec
 
 # collect filtered bam files ----------------------------------------------
-tmpfolder <- paste(inp$out_dir,"/zUMIs_output/.tmpMerge/",sep="")
+tmpfolder <- paste(inp$out_dir,"/zUMIs_output/.tmpMerge",sep="")
 filtered_bams <- list.files(path = tmpfolder, pattern=paste(inp$project,".*.filtered.tagged.bam$",sep=""),full.names=T)
 
 # GTF file setup ----------------------------------------------------------
@@ -100,6 +100,7 @@ STAR_command <- paste(STAR_command,samtools_output)
 sammerge_command <- paste(samtools,"merge -f -@",cores_samtools,paste0(inp$out_dir,"/",inp$project,".filtered.tagged.unmapped.bam"),paste0(filtered_bams,collapse=" "))
 
 #finally, run STAR
-system(paste(STAR_command,"&",sammerge_command,"& wait"))
+system(STAR_command)
+system(sammerge_command)
 system(paste0("rm ",tmpfolder,"/",inp$project,".*"))
 q()

@@ -8,7 +8,7 @@ library(ggplot2)
 myYaml <- commandArgs(trailingOnly = T)
 
 opt   <-read_yaml(myYaml)
-setwd(opt$out_dir)
+
 #try(unixtools::set.tempdir(opt$out_dir))
 source(paste0(opt$zUMIs_directory,"/runfeatureCountFUN.R"))
 source(paste0(opt$zUMIs_directory,"/misc/featureCounts.R"))
@@ -16,6 +16,7 @@ source(paste0(opt$zUMIs_directory,"/UMIstuffFUN.R"))
 source(paste0(opt$zUMIs_directory,"/barcodeIDFUN.R"))
 options(datatable.fread.input.cmd.message=FALSE)
 print(Sys.time())
+setwd(opt$out_dir)
 
 samtoolsexc <- opt$samtools_exec
 data.table::setDTthreads(threads=opt$num_threads)
@@ -138,6 +139,15 @@ for(i in unique(bccount$chunkID)){
     }else{
        allC<-bindList(alldt=allC,newdt=tmp)
     }
+}
+
+# Check if intron frame is empty
+if(length(allC$intron$all) == 0) {
+  allC$intron <- allC$exon
+  allC$intron$all$umicount <- 0
+  allC$intron$all$readcount <- 0
+  allC$intron$downsampling$downsampled_$umicount <- 0
+  allC$intron$downsampling$downsampled_$readcount <- 0
 }
 
 if(any(unlist(lapply(opt$sequence_files, function(x){grepl("UMI",x$base_definition)} ))) ){

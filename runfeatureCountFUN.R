@@ -20,7 +20,7 @@ suppressWarnings(suppressMessages(require(AnnotationDbi)))
 .makeSAF<-function(gtf){
   print("Loading reference annotation from:")
   print(gtf)
-  txdb <- suppressWarnings(suppressMessages(GenomicFeatures::makeTxDbFromGFF(file=gtf, format = "gff3")))
+  txdb <- GenomicFeatures::makeTxDbFromGFF(file=gtf, format = "gff3")
 
   ## Make Gene-range GR-object
   se <- suppressMessages(
@@ -72,6 +72,7 @@ suppressWarnings(suppressMessages(require(AnnotationDbi)))
 }
 .runFeatureCount<-function(abamfile,RG,saf,strand,type,primaryOnly,cpu,mem,fcounts_clib){
   print(paste0("Assigning reads to features (",type,")"))
+  print(getwd())
   #  fc.stat<-Rsubread::featureCounts(files=abamfile,
      fc.stat <- featureCounts(files=abamfile,
                                    annot.ext=saf,

@@ -4,7 +4,8 @@
 # Authors: Swati Parekh, Christoph Ziegenhain, Beate Vieth & Ines Hellmann
 # Contact: sparekh@age.mpg.de or christoph.ziegenhain@ki.se
 vers=2.5.6b
-currentv=`curl -s https://raw.githubusercontent.com/sdparekh/zUMIs/master/zUMIs-master.sh | grep '^vers=' | cut -f2 -d "="`
+currentv=`curl --connect-timeout 15 -s https://raw.githubusercontent.com/sdparekh/zUMIs/master/zUMIs-master.sh | grep '^vers=' | cut -f2 -d "="`
+echo $currentv
 if [ "$currentv" != "$vers" ]; then echo -e "------------- \n\n Good news! A newer version of zUMIs is available at https://github.com/sdparekh/zUMIs \n\n-------------"; fi
 
 function check_opts() {
@@ -154,7 +155,7 @@ fi
 #create output folders
 outdir=`grep 'out_dir' $yaml | awk '{print $2}'`
 #[ -d $outdir ] || mkdir $outdir
-[ -d $outdir/zUMIs_output/ ] || mkdir $outdir/zUMIs_output/
+[ -d $outdir/zUMIs_output/ ] || mkdir -p $outdir/zUMIs_output/
 [ -d $outdir/zUMIs_output/expression ] || mkdir $outdir/zUMIs_output/expression
 [ -d $outdir/zUMIs_output/stats ] || mkdir $outdir/zUMIs_output/stats
 [ -d $outdir/zUMIs_output/.tmpMerge ] || mkdir $outdir/zUMIs_output/.tmpMerge
